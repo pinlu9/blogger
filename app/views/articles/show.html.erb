@@ -1,8 +1,24 @@
 <h1><%= @article.title %></h1>
+<p>
+	Tags:
+	<% @article.tags.each do |tag| %>
+		<%= link_to tag.name, tag_path(tag) %>
+	<% end %>
 
-<p><%= @article.body %></p>
+</p>
 
+	<p>
+		<% if @article.image.exists? %>
+			<%= image_tag @article.image.url %>
+		<% end %>
+	</p>
+	<p><%= @article.body %></p>
+
+	<h3>Comments(<%= @article.comments.count %>)</h3>
+
+<%= render partial: 'comments/form' %>
+<%= render partial: 'articles/comment', collection: @article.comments %>
 
 <%= link_to "<< Back to Articles List", articles_path %>
 <%= link_to "Edit", edit_article_path(@article) %>
-<%= link_to "delete", some_path %>
+<%= link_to "Delete", article_path(@article), method: :delete, data: { confirm: "Are you sure?"} %>
